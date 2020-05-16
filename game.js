@@ -18,6 +18,7 @@ var pp = 1;
 var game = -1;
 var endCount = 10;
 function init(){
+	game = 1;
 	const canvas = document.getElementById("canvas");
 	ctx= canvas.getContext('2d');
 	document.getElementById("areapercent").innerHTML = "Percentage of area covered by balls: 0%";
