@@ -1,7 +1,29 @@
+html{
+	background: black;
+}
 #canvas{
-	border: 2px solid blue;
+	border: 4px solid blue;
 	margin-left: 50px;
 	margin-top: 50px;
+	background: white;
+	float: left;
 }
-#stuff{
+#info{
+	float: left;
+	border: 4px solid blue;
+	font-size: 30px;
+	margin-left: 50px;
+	margin-top: 50px;
+	color: blue;
+	padding: 10px;
+}
+#name{
+	/*float: top;*/
+	border: 4px solid blue;
+	font-size: 50px;
+	margin-left: 50px;
+	margin-top: 50px;
+	color: blue;
+	padding: 10px;
+	text-align: center;
 }

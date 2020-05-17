@@ -18,6 +18,7 @@ var pp = 1;
 var game = -1;
 var endCount = 10;
 function init(){
+	document.getElementById("info").style.display = 'block';
 	game = 1;
 	const canvas = document.getElementById("canvas");
 	ctx= canvas.getContext('2d');
@@ -40,7 +41,12 @@ function generate_balls(){
 	upper_radius = 50;
 	lower_radius = 15;
 	var Score = 0;
+	var red,green,blue,rgb;
 	
+	red = random(0,255);
+	blue = random(0,255);
+	green = random(0,255);
+	rgb = "rgb("+red+","+green+","+blue+")";
 	do{
 		radius = random(lower_radius,upper_radius);
 		Score = Math.floor(-radius+65);
@@ -60,7 +66,7 @@ function generate_balls(){
 		}
 	}
 	while(goAhead == 0);
-	balls.push([x ,y, dx, dy, radius, Score]);
+	balls.push([x ,y, dx, dy, radius, Score,rgb]);
 	//alert(balls[totalBalls]);
 	total_area();
 	totalBalls++;	
@@ -88,7 +94,7 @@ function draw(){
 	ctx.clearRect(0,0, width,height);
 	for(i = 0;i<totalBalls;i++){
 		ctx.beginPath();
-		ctx.fillStyle="#0000ff";
+		ctx.fillStyle= balls[i][6];
 		ctx.arc(balls[i][0],balls[i][1],balls[i][4],0,Math.PI*2,true);
 		ctx.closePath();
 		ctx.fill();
@@ -175,12 +181,16 @@ document.addEventListener('click', function(e) {
 		score+=balls[num][5];
 		//alert(balls[num][5]);
 		document.getElementById("score").innerHTML = "Score: " + score;
+		store_score();
+		get_score();
 		for(i=num;i<totalBalls-1;i++){
 			balls[i][0] = balls[i+1][0];
 			balls[i][1] = balls[i+1][1];
 			balls[i][2] = balls[i+1][2];
 			balls[i][3] = balls[i+1][3];
 			balls[i][4] = balls[i+1][4];
+			balls[i][5] = balls[i+1][5];
+			balls[i][6] = balls[i+1][6];
 		}
 		balls.pop();
 		totalBalls--;
@@ -260,6 +270,9 @@ function too_many(){
 			endCount--;
 		},1000);
 	}
+	if(percent < 0){
+		percent = 0;
+	}
 	if(percent < 50){
 		already = 0;
 		endCount = 10;
@@ -285,6 +298,9 @@ function restart(){
 	
 }
 function start(){
+	set_to_zero();
+	get_score();
+	document.getElementById("info").style.display = 'none';
 	const canvas = document.getElementById("canvas");
 	ctx= canvas.getContext('2d');
 	ctx.clearRect(150,225,200,50);
@@ -294,8 +310,23 @@ function start(){
 	ctx.fillStyle = "black";
 	ctx.textAlign = "centre";
 	ctx.font = '30px serif';
-	//ctx.fillText("Score: "+ highScore, 350,50);
 	ctx.fillText("Start Game",180,260,200);
+}
+
+function store_score(){
+	
+	let temp = localStorage.getItem("highScore");
+	if((score >= temp )||(temp === "0")){
+		localStorage.setItem("highScore",score);
+	}
+}
+function set_to_zero(){
+	if(localStorage.getItem("highScore") == null){
+			localStorage.setItem("highScore", "0");
+	}
+}
+function get_score(){
+	document.getElementById("highscore").innerHTML = "Highscore: "+localStorage.getItem("highScore");
 }
 window.onload = start;
 
